@@ -9,11 +9,14 @@
 @if (ViewBag.cheeses.Count > 0)
 {
     <ul>
-        @foreach (KeyValuePair<string, string> cheese in ViewBag.cheeses)
+        @foreach (var cheese in ViewBag.cheeses)
         {
             <li>
-                <h3>@cheese.Key</h3>
-                <p>@cheese.Value</p>
+                <h3>@cheese.Name</h3>
+                <p>@cheese.Description</p>
+                <form method="post" asp-controller="Cheese" asp-action="Delete">
+                    <button type="submit" name="cheese" value="@cheese.Name">X</button>
+                </form>
             </li>
         }
     </ul>
