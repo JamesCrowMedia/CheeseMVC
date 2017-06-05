@@ -21,10 +21,15 @@ namespace CheeseMVC.Models
             set { description = value; }
         }
 
-        public Cheese (string name, string description = "")
+        public int CheeseId { get; private set; }
+        private static int nextId = 1;
+
+        public Cheese ()
         {
-            Name = name;
-            Description = description;
+            //Name = name;
+            //Description = description;
+            CheeseId = nextId;
+            nextId++;
         }
 
     }

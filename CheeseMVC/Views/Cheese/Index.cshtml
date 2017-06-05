@@ -15,7 +15,10 @@
                 <h3>@cheese.Name</h3>
                 <p>@cheese.Description</p>
                 <form method="post" asp-controller="Cheese" asp-action="Delete">
-                    <button type="submit" name="cheese" value="@cheese.Name">X</button>
+                    <button type="submit" name="cheeseId" value="@cheese.CheeseId">X</button>
+                </form>
+                <form method="get" asp-controller="Cheese" asp-action="Edit">
+                    <button type="submit" name="cheeseId" value="@cheese.CheeseId">Edit</button>
                 </form>
             </li>
         }

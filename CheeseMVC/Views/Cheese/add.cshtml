@@ -5,8 +5,8 @@
 <h1>Add Cheese</h1>
 
 <form method="post" asp-controller="Cheese" asp-action="Add">
-    <input name="name" type="text"/><br/>
-    <textarea name="description" type="text"></textarea><br/>
+    <input name="Name" type="text"/><br/>
+    <textarea name="Description" type="text"></textarea><br/>
     <input type="submit" value="add cheese" />
     @if (!String.IsNullOrEmpty(ViewBag.error))
     {

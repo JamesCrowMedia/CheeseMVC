@@ -1,0 +1,14 @@
+﻿
+<h1>Edit Cheese: @ViewBag.cheese.Name (id: @ViewBag.cheese.CheeseId)</h1>
+
+<form method="post" asp-controller="Cheese" asp-action="Edit">
+    <input type="hidden" value="@ViewBag.cheese.CheeseId" name="cheeseId" />
+    <input name="Name" type="text" value="@ViewBag.cheese.Name"/><br />
+    <textarea name="Description" type="text" value="@ViewBag.cheese.Description"></textarea><br />
+    <input type="submit" value="edit cheese" />
+    @if (!String.IsNullOrEmpty(ViewBag.error))
+    {
+        <div>@ViewBag.error</div>
+
+    }
+</form>

@@ -12,13 +12,13 @@ namespace CheeseMVC.Controllers
     public class CheeseController : Controller
     {
 
-        static private List<Cheese> Cheeses = new List<Cheese>();
+        
 
         // GET: /<controller>/
         public IActionResult Index()
         {
 
-            ViewBag.cheeses = Cheeses;
+            ViewBag.cheeses = CheeseData.GetAll();
 
             return View();
         }
@@ -35,33 +35,55 @@ namespace CheeseMVC.Controllers
 
         [HttpPost]
         [Route("/Cheese/Add")]
-        public IActionResult NewCheese(string name, string description)
+        public IActionResult NewCheese(Cheese newCheese)
         {
-            // Add new cheese to my existing cheeses
-            if (!String.IsNullOrEmpty(name))
+            if (!String.IsNullOrEmpty(newCheese.Name))
             {
-                Cheese newCheese = new Cheese(name, description);
-                Cheeses.Add(newCheese);
-
-                return Redirect("/cheese");
+                CheeseData.Add(newCheese);
             }
             else
             {
-                string error = "Your cheese needs a name";
-
-                return Redirect("/cheese/add?error=True");
+                return Redirect("/Cheese/Add?error=true");
             }
+
+            return Redirect("/Cheese");
+
         }
         [HttpPost]
         [Route("/Cheese/Delete")]
-        public IActionResult DeleteCheese(string cheese)
+        public IActionResult DeleteCheese(int cheeseId)
         {
             // Add new cheese to my existing cheeses
 
-            int removeIndex = Cheeses.FindIndex(x => x.Name.Equals(cheese));
-            Cheeses.RemoveAt(removeIndex);
+            CheeseData.Remove(cheeseId);
 
-            return Redirect("/cheese");
+            return Redirect("/Cheese");
+        }
+
+        public IActionResult  Edit(int cheeseId)
+        {
+            ViewBag.cheese = CheeseData.GetById(cheeseId);
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult Edit(int cheeseId, string name, string description)
+        {
+
+            if (!String.IsNullOrEmpty(name))
+            {
+                Cheese oldCheese = CheeseData.GetById(cheeseId);
+                oldCheese.Name = name;
+                oldCheese.Description = description;
+            }
+            else
+            {
+                ViewBag.cheese = CheeseData.GetById(cheeseId);
+                ViewBag.error = "You have to name a cheese!";
+                return View("Edit");
+            }
+
+            return Redirect("/Cheese");
         }
     }
 }
