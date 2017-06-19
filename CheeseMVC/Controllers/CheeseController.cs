@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using CheeseMVC.Models;
 using CheeseMVC.ViewModels;
-
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace CheeseMVC.Controllers
@@ -24,7 +23,7 @@ namespace CheeseMVC.Controllers
             return View(cheeses);
         }
 
-        public IActionResult Add(bool error = false)
+        public IActionResult Add()
         {
             AddCheeseViewModel addCheeseViewModel = new AddCheeseViewModel();
 
@@ -65,28 +64,34 @@ namespace CheeseMVC.Controllers
 
         public IActionResult  Edit(int cheeseId)
         {
-            ViewBag.cheese = CheeseData.GetById(cheeseId);
-            return View();
+            Cheese fetchedCheese = CheeseData.GetById(cheeseId);
+
+            AddEditCheeseViewModel addEditCheeseViewModel = new AddEditCheeseViewModel
+            {
+                Name = fetchedCheese.Name,
+                Description = fetchedCheese.Description,
+                Type = fetchedCheese.Type,
+                CheeseId = fetchedCheese.CheeseId
+            };
+
+            return View(addEditCheeseViewModel);
         }
 
         [HttpPost]
-        public IActionResult Edit(int cheeseId, string name, string description)
+        public IActionResult Edit(AddEditCheeseViewModel addEditCheeseViewModel)
         {
 
-            if (!String.IsNullOrEmpty(name))
+            if (ModelState.IsValid)
             {
-                Cheese oldCheese = CheeseData.GetById(cheeseId);
-                oldCheese.Name = name;
-                oldCheese.Description = description;
-            }
-            else
-            {
-                ViewBag.cheese = CheeseData.GetById(cheeseId);
-                ViewBag.error = "You have to name a cheese!";
-                return View("Edit");
+                Cheese cheese = CheeseData.GetById(addEditCheeseViewModel.CheeseId);
+                cheese.Name = addEditCheeseViewModel.Name;
+                cheese.Description = addEditCheeseViewModel.Description;
+                cheese.Type = addEditCheeseViewModel.Type;
+                   
+                return Redirect("/Cheese");
             }
 
-            return Redirect("/Cheese");
+            return View(addEditCheeseViewModel);
         }
     }
 }

@@ -1,14 +1,32 @@
 ﻿
-<h1>Edit Cheese: @ViewBag.cheese.Name (id: @ViewBag.cheese.CheeseId)</h1>
+@model CheeseMVC.ViewModels.AddEditCheeseViewModel
+
+<h1>Edit Cheese</h1>
 
 <form method="post" asp-controller="Cheese" asp-action="Edit">
-    <input type="hidden" value="@ViewBag.cheese.CheeseId" name="cheeseId" />
-    <input name="Name" type="text" value="@ViewBag.cheese.Name"/><br />
-    <textarea name="Description" type="text" value="@ViewBag.cheese.Description"></textarea><br />
-    <input type="submit" value="edit cheese" />
-    @if (!String.IsNullOrEmpty(ViewBag.error))
-    {
-        <div>@ViewBag.error</div>
+    <div class="form-group">
+        <label asp-for="Name"></label>
+        <input class="form-control" asp-for="Name" />
+        <div asp-validation-for="Name"></div>
 
-    }
+    </div>
+    <div class="form-group">
+        <label asp-for="Description"></label>
+        <input class="form-control" asp-for="Description" />
+        <div asp-validation-for="Description"></div>
+
+    </div>
+    <div class="form-group">
+        <label asp-for="Type"></label>
+        <select asp-for="Type" asp-items="Model.CheeseTypes"></select>
+
+    </div>
+    <input class="form-control" type="hidden" asp-for="CheeseId" />
+    <input type="submit" value="add cheese" />
 </form>
+
+
+
+
+
+
